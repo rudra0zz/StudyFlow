@@ -4,22 +4,22 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 
-export async function createSubject(formdata: FormData) {
+export async function createSubject(prevState: unknown, formdata: FormData) {
 
     const subjectName = formdata.get("subjectName") as string;
 
     const name = subjectName.trim();
 
     if (!subjectName?.toString().trim()) {
-        return;
+        return { error: "Subject name is required." };
     }
 
     if (name.length < 3) {
-        return;
+        return { error: "Subject name must be at least 3 characters." };
     }
 
     if (name.length > 50) {
-        return;
+        return { error: "Subject name must be 50 characters or less." };
     }
 
     const user = await getCurrentUser();

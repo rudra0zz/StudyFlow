@@ -44,7 +44,6 @@ export async function createTask(formData: FormData) {
 
 export async function updateTask(formData: FormData) {
 
-    const id = Number(formData.get("taskId"));
     const subjectId = Number(formData.get("subjectId"));
     const title = formData.get("title") as string;
 
@@ -64,18 +63,6 @@ export async function updateTask(formData: FormData) {
 
     const user = await getCurrentUser();
     if (!user) return;
-
-    const result = await prisma.task.updateMany({
-        where: {
-            id,
-            subject: {
-                userId: user.id,
-            },
-        },
-        data: {
-            title: name,
-        },
-    });
 
     redirect(`/dashboard/subjects/${subjectId}`)
 }
